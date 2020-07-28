@@ -3,7 +3,7 @@ const getQuestions = async () => {
 
   try {
     let res = await fetch(
-      'https://opentdb.com/api.php?amount=10&category=31&type=multiple'
+      'https://opentdb.com/api.php?amount=10&category=9&type=multiple'
     )
     data = await res.json()
   } catch (err) {

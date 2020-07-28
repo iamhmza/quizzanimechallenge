@@ -1,4 +1,4 @@
-# Simlpe Anime Quizapp Using Vuejs
+# A simple Quizapp Using Vuejs
 
 ### Opentdb Api
 

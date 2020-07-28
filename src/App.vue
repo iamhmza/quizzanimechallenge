@@ -19,7 +19,8 @@
           :key="i"
           :class="myAnswer == answer ? 'choosen': ''"
           @click="chooseQuestion"
-        >{{answer}}</li>
+          v-html="answer"
+        ></li>
       </ul>
 
       <button @click="goNext" :disabled="myAnswer == ''">NEXT</button>
@@ -49,13 +50,13 @@
 
 
 <script>
-import Header from './components/Header'
+import Header from "./components/Header";
 
-import getQuestions from './services/getQuestions'
-import makeQuestion from './entities/makeQuesion'
+import getQuestions from "./services/getQuestions";
+import makeQuestion from "./entities/makeQuesion";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
     Header
   },
@@ -63,72 +64,72 @@ export default {
     return {
       questions: [],
       question_wrapper: null,
-      question: '',
-      myAnswer: '',
+      question: "",
+      myAnswer: "",
       answers: [],
       index: 0,
       numCorrect: 0,
       endGame: false
-    }
+    };
   },
   computed: {
     getNumTotal: function() {
-      return this.index + 1
+      return this.index + 1;
     }
   },
   watch: {
     question_wrapper: function() {
-      this.question = this.question_wrapper.getQuestion()
-      this.answers = this.question_wrapper.getOptions()
-      this.index = this.question_wrapper.getIndex()
+      this.question = this.question_wrapper.getQuestion();
+      this.answers = this.question_wrapper.getOptions();
+      this.index = this.question_wrapper.getIndex();
     }
   },
   methods: {
     chooseQuestion: function(e) {
-      this.myAnswer = e.target.textContent
+      this.myAnswer = e.target.textContent;
     },
     goNext: function() {
       /* update score */
       if (this.question_wrapper.validate(this.myAnswer)) {
-        this.numCorrect += 1
+        this.numCorrect += 1;
       }
 
       /* when we go through all question end game */
       if (this.getNumTotal == this.questions.length) {
-        this.finished()
-        return false
+        this.finished();
+        return false;
       }
 
       /* make new question */
       this.question_wrapper = makeQuestion({
         questions: this.questions,
         index: this.index + 1
-      })
+      });
 
       /* reset my answer */
-      this.myAnswer = ''
+      this.myAnswer = "";
     },
     finished: function() {
-      this.endGame = true
+      this.endGame = true;
     },
     startGame: async function() {
-      this.questions = []
-      this.myAnswer = ''
-      this.index = 0
-      this.numCorrect = 0
-      this.endGame = false
+      this.questions = [];
+      this.myAnswer = "";
+      this.index = 0;
+      this.numCorrect = 0;
+      this.endGame = false;
 
-      const { results } = await getQuestions()
-      this.questions = results
-      this.question_wrapper = makeQuestion({ questions: results, index: 0 })
+      const { results } = await getQuestions();
+      this.questions = results;
+      this.question_wrapper = makeQuestion({ questions: results, index: 0 });
     }
   },
   mounted: async function() {
-    const { results } = await getQuestions()
-    this.questions = results
-    this.question_wrapper = makeQuestion({ questions: results, index: 0 })
+    const { results } = await getQuestions();
+    this.questions = results;
+    this.question_wrapper = makeQuestion({ questions: results, index: 0 });
   }
-}
+};
 </script>
 
 <style>
@@ -138,7 +139,7 @@ export default {
   box-sizing: border-box;
 }
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 a {
   text-decoration: none;
@@ -151,10 +152,10 @@ a {
 }
 .question_wrapper h1 {
   text-align: center;
-  margin-bottom: 1rem;
+  margin: 1rem 0;
 }
 h2 {
-  font-family: 'QUARTZO Demo', sans-serif;
+  font-family: "QUARTZO Demo", sans-serif;
 }
 
 .options {
@@ -176,7 +177,6 @@ button {
 .options li:hover {
   color: whitesmoke;
   background-color: #ff3562;
-  border: none;
 }
 .options li.choosen {
   color: whitesmoke;
